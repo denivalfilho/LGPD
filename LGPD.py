@@ -34,6 +34,13 @@ metadata.create_all(engine)
 
 @medir_tempo
 def LGPD(row):
+    row_lista = list(row)
+
+    nome_completo = row_lista[1]
+    primeiro_nome = nome_completo.split()[0]
+    resto_do_nome = nome_completo[len(primeiro_nome):]
+    row_lista[1] = primeiro_nome[0] + ("*" * (len(primeiro_nome)-1)) + resto_do_nome
+
     return row
 
 users = []
