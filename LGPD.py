@@ -48,7 +48,10 @@ def LGPD(row):
     usuario, dominio = email.split("@")
     row_lista[3] = usuario[0] + ("*" * 9) + "@" + dominio
 
-    return row
+    telefone = row_lista[4]
+    row_lista[4] = telefone[-4:]
+
+    return tuple(row_lista)
 
 users = []
 with engine.connect() as conn:
