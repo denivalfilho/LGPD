@@ -44,6 +44,10 @@ def LGPD(row):
     cpf_original = row_lista[2]
     row_lista[2] = cpf_original[0:4] + "***.***-**"
 
+    email = row_lista[3]
+    usuario, dominio = email.split("@")
+    row_lista[3] = usuario[0] + ("*" * 9) + "@" + dominio
+
     return row
 
 users = []
