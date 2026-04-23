@@ -41,6 +41,9 @@ def LGPD(row):
     resto_do_nome = nome_completo[len(primeiro_nome):]
     row_lista[1] = primeiro_nome[0] + ("*" * (len(primeiro_nome)-1)) + resto_do_nome
 
+    cpf_original = row_lista[2]
+    row_lista[2] = cpf_original[0:4] + "***.***-**"
+
     return row
 
 users = []
