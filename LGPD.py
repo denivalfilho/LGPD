@@ -34,6 +34,8 @@ usuarios = Table(
 
 metadata.create_all(engine)
 
+# Atividade 1
+
 @medir_tempo
 def LGPD(row):
     row_lista = list(row)
@@ -54,6 +56,8 @@ def LGPD(row):
     row_lista[4] = telefone[-4:]
 
     return tuple(row_lista)
+
+# Atividade 2
 
 users = []
 with engine.connect() as conn:
@@ -79,7 +83,7 @@ for ano in anos_encontrados:
                 
     print(f"Arquivo {nome_arquivo} criado com sucesso!")
 
-# ATIVIDADE 3
+# Atividade 3
 with open("todos.csv", "w", newline="", encoding="utf-8") as f_todos:
     escritor_todos = csv.writer(f_todos)
     
