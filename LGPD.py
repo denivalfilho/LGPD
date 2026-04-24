@@ -57,7 +57,7 @@ def LGPD(row):
 
 users = []
 with engine.connect() as conn:
-    result = conn.execute(text("SELECT * FROM usuarios LIMIT 5;"))
+    result = conn.execute(text("SELECT * FROM usuarios;"))
     for row in result:
         row = LGPD(row)
         users.append(row)
@@ -86,12 +86,9 @@ with open("todos.csv", "w", newline="", encoding="utf-8") as f_todos:
     escritor_todos.writerow(['nome', 'cpf'])
     
     with engine.connect() as conn:
-        result_bruto = conn.execute(text("SELECT nome, cpf FROM usuarios LIMIT 50;"))
+        result_bruto = conn.execute(text("SELECT nome, cpf FROM usuarios;"))
         
         for registro in result_bruto:
             escritor_todos.writerow(registro)
 
 print("✅ Arquivo todos.csv (dados originais) criado com sucesso!")
-
-for user in users:
-    print(user)
