@@ -1,8 +1,10 @@
+import csv
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, Date, DateTime, insert, text
 from datetime import datetime
 
 import time
 from functools import wraps
+
 def medir_tempo(func):
     """Decorator que mede o tempo de execução de uma função."""
     @wraps(func)
@@ -59,6 +61,15 @@ with engine.connect() as conn:
     for row in result:
         row = LGPD(row)
         users.append(row)
+
+anos_encontrados = []
+for u in users:
+    ano = u[5].year
+    if ano not in anos_encontrados:
+        anos_encontrados.append(ano)
+
+for ano in anos_encontrados:
+    nome_arquivo = f"{ano}.csv"
 
 for user in users:
     print(user)
