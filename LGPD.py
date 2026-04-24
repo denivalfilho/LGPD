@@ -70,6 +70,14 @@ for u in users:
 
 for ano in anos_encontrados:
     nome_arquivo = f"{ano}.csv"
+    with open(nome_arquivo, "w", newline="", encoding="utf-8") as f:
+        escritor = csv.writer(f)
+
+        for u in users:
+            if u[5].year == ano:
+                escritor.writerow(u)
+                
+    print(f"Arquivo {nome_arquivo} criado com sucesso!")
 
 for user in users:
     print(user)
