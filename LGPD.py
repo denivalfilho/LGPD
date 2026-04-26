@@ -13,7 +13,13 @@ def medir_tempo(func):
         resultado = func(*args, **kwargs)
         fim = time.perf_counter()     # tempo final
         duracao = fim - inicio
-        print(f"⏱ Função '{func.__name__}' executada em {duracao:.6f} segundos.")
+        mensagem=f" Função '{func.__name__}' executada em {duracao:.6f} segundos."
+        
+        # Parte da ATIVIDADE 4 para gravação no arquivo de LOG
+        with open("log_execucao.txt", "a", encoding="utf-8") as log_file:
+            log_file.write(f"[{datetime.now()}] {mensagem}\n")
+        print(f"{mensagem}")     
+        
         return resultado
     return wrapper
 
@@ -34,65 +40,71 @@ usuarios = Table(
 
 metadata.create_all(engine)
 
-# Atividade 1
+# Atividade 4
 
 @medir_tempo
-def LGPD(row):
-    row_lista = list(row)
+def executar_trabalho():
+    
+# Atividade 1  
+    
+    def LGPD(row):
+        row_lista = list(row)
 
-    nome_completo = row_lista[1]
-    primeiro_nome = nome_completo.split()[0]
-    resto_do_nome = nome_completo[len(primeiro_nome):]
-    row_lista[1] = primeiro_nome[0] + ("*" * (len(primeiro_nome)-1)) + resto_do_nome
+        nome_completo = row_lista[1]
+        primeiro_nome = nome_completo.split()[0]
+        resto_do_nome = nome_completo[len(primeiro_nome):]
+        row_lista[1] = primeiro_nome[0] + ("*" * (len(primeiro_nome)-1)) + resto_do_nome
 
-    cpf_original = row_lista[2]
-    row_lista[2] = cpf_original[0:4] + "***.***-**"
+        cpf_original = row_lista[2]
+        row_lista[2] = cpf_original[0:4] + "***.***-**"
 
-    email = row_lista[3]
-    usuario, dominio = email.split("@")
-    row_lista[3] = usuario[0] + ("*" * 9) + "@" + dominio
+        email = row_lista[3]
+        usuario, dominio = email.split("@")
+        row_lista[3] = usuario[0] + ("*" * 9) + "@" + dominio
 
-    telefone = row_lista[4]
-    row_lista[4] = telefone[-4:]
+        telefone = row_lista[4]
+        row_lista[4] = telefone[-4:]
 
-    return tuple(row_lista)
+        return tuple(row_lista)
 
 # Atividade 2
 
-users = []
-with engine.connect() as conn:
-    result = conn.execute(text("SELECT * FROM usuarios;"))
-    for row in result:
-        row = LGPD(row)
-        users.append(row)
-
-anos_encontrados = []
-for u in users:
-    ano = u[5].year
-    if ano not in anos_encontrados:
-        anos_encontrados.append(ano)
-
-for ano in anos_encontrados:
-    nome_arquivo = f"{ano}.csv"
-    with open(nome_arquivo, "w", newline="", encoding="utf-8") as f:
-        escritor = csv.writer(f)
-
-        for u in users:
-            if u[5].year == ano:
-                escritor.writerow(u)
-                
-    print(f"Arquivo {nome_arquivo} criado com sucesso!")
-
-# Atividade 3
-with open("todos.csv", "w", newline="", encoding="utf-8") as f_todos:
-    escritor_todos = csv.writer(f_todos)
-    
-    escritor_todos.writerow(['nome', 'cpf'])
-    
+    users = []
     with engine.connect() as conn:
-        result_bruto = conn.execute(text("SELECT nome, cpf FROM usuarios;"))
-        
-        for registro in result_bruto:
-            escritor_todos.writerow(registro)
+        result = conn.execute(text("SELECT * FROM usuarios;"))
+        for row in result:
+            row = LGPD(row)
+            users.append(row)
 
-print("✅ Arquivo todos.csv (dados originais) criado com sucesso!")
+    anos_encontrados = []
+    for u in users:
+        ano = u[5].year
+        if ano not in anos_encontrados:
+            anos_encontrados.append(ano)
+
+    for ano in anos_encontrados:
+        nome_arquivo = f"{ano}.csv"
+        with open(nome_arquivo, "w", newline="", encoding="utf-8") as f:
+            escritor = csv.writer(f)
+
+            for u in users:
+                if u[5].year == ano:
+                    escritor.writerow(u)
+                    
+        print(f"Arquivo {nome_arquivo} criado com sucesso!")
+
+    # Atividade 3
+    with open("todos.csv", "w", newline="", encoding="utf-8") as f_todos:
+        escritor_todos = csv.writer(f_todos)
+        
+        escritor_todos.writerow(['nome', 'cpf'])
+        
+        with engine.connect() as conn:
+            result_bruto = conn.execute(text("SELECT nome, cpf FROM usuarios;"))
+            
+            for registro in result_bruto:
+                escritor_todos.writerow(registro)
+
+    print("Arquivo todos.csv (dados originais) criado com sucesso!")
+
+executar_trabalho()
