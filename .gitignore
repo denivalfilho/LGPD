@@ -1,2 +1,3 @@
 *.csv
 log_execucao.txt
+venv/
