@@ -1,2 +1,0 @@
-[2026-04-26 19:08:18.426726]  Função 'executar_trabalho' executada em 0.992615 segundos.
-[2026-04-26 19:08:57.895955]  Função 'executar_trabalho' executada em 1.139845 segundos.
