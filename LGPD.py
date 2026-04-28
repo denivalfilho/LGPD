@@ -45,7 +45,7 @@ metadata.create_all(engine)
 @medir_tempo
 def executar_trabalho():
     
-# Atividade 1  
+    # Atividade 1  
     
     def LGPD(row):
         row_lista = list(row)
@@ -67,7 +67,7 @@ def executar_trabalho():
 
         return tuple(row_lista)
 
-# Atividade 2
+    # Atividade 2
 
     users = []
     with engine.connect() as conn:
